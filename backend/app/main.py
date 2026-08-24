@@ -1,17 +1,37 @@
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
 from app.api.v1.router import api_router
 from app.core.config import settings
 from app.db.base import engine
+from app.services.alertas_job import run_alertas_job
+
+scheduler = AsyncIOScheduler()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(lambda c: None)
+
+    scheduler.add_job(
+        run_alertas_job,
+        "interval",
+        hours=settings.ALERTAS_JOB_INTERVAL_HOURS,
+        next_run_time=datetime.now(timezone.utc),  # corre una vez al arrancar, luego cada intervalo
+        id="check_overdue",
+        replace_existing=True,
+    )
+    scheduler.start()
+
     yield
+
+    scheduler.shutdown(wait=False)
     await engine.dispose()
 
 

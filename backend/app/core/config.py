@@ -32,6 +32,9 @@ class Settings(BaseSettings):
 
     ALLOWED_ORIGINS: str = "http://localhost:3000"
 
+    # Cada cuántas horas corre el job que marca facturas vencidas / cotizaciones expiradas
+    ALERTAS_JOB_INTERVAL_HOURS: int = 6
+
     # Hosts permitidos para TrustedHostMiddleware en producción.
     # Si se deja vacío, se derivan automáticamente de los hostnames de ALLOWED_ORIGINS.
     ALLOWED_HOSTS: str = ""

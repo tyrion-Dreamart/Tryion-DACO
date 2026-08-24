@@ -25,6 +25,9 @@ dist-ssr/
 .DS_Store
 Thumbs.db
 
+# Runtime logs
+*.log
+
 # Este proyecto: carpeta de respaldo de la consolidación de estructura,
 # no debe entrar al historial (ver _archive/README.md)
 /_archive/

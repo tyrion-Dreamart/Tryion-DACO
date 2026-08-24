@@ -243,20 +243,20 @@ class Invoice(Base):
     issue_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     due_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     subtotal: Mapped[Optional[float]] = mapped_column(Numeric(15, 2), default=0.0)
-    balance: Mapped[Optional[float]] = mapped_column(nullable=True)
-    paid_amount: Mapped[Optional[float]] = mapped_column(nullable=True)
+    balance: Mapped[Optional[float]] = mapped_column(Numeric(12, 2), nullable=True)
+    paid_amount: Mapped[Optional[float]] = mapped_column(Numeric(12, 2), nullable=True, default=0)
     tax_amount: Mapped[Optional[float]] = mapped_column(Numeric(15, 2), default=0.0)
-    iva_amount: Mapped[Optional[float]] = mapped_column(nullable=True)
+    iva_amount: Mapped[Optional[float]] = mapped_column(Numeric(12, 2), nullable=True, default=0)
     total: Mapped[Optional[float]] = mapped_column(Numeric(15, 2), default=0.0)
     currency: Mapped[str] = mapped_column(String(3), default="MXN", nullable=False)
-    exchange_rate: Mapped[Optional[float]] = mapped_column(nullable=True)
+    exchange_rate: Mapped[Optional[float]] = mapped_column(Numeric(10, 4), nullable=True)
     status: Mapped[InvoiceStatus] = mapped_column(
         SAEnum(InvoiceStatus, name="invoice_status"),
         default=InvoiceStatus.PENDING,
         nullable=False,
     )
     notes: Mapped[Optional[str]] = mapped_column(Text)
-    pdf_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    pdf_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

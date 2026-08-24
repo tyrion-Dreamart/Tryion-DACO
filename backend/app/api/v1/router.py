@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from app.api.v1.endpoints import auth, contacts, corporates, legal_entities, clients, dashboard, quotes, invoices, alertas, reportes, exportar
-from app.core.deps import require_editor
 
 api_router = APIRouter(prefix="/api/v1")
 

@@ -1,10 +1,10 @@
 import math
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import select, func
 
-from app.core.deps import CurrentUser, DBDep, get_current_user
+from app.core.deps import CurrentUser, DBDep
 from app.models.models import Contact, LegalEntity
 from app.schemas.schemas import (
     ContactCreate,
@@ -104,4 +104,11 @@ async def update_contact(
     current_user: CurrentUser,
 ):
     result = await db.execute(select(Contact).where(Contact.id == contact_id))
-    contact = result.scalar_one_or_none
+    contact = result.scalar_one_or_none()
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+    for field, value in payload.model_dump(exclude_unset=True).items():
+        setattr(contact, field, value)
+    await db.flush()
+    await db.refresh(contact)
+    return ContactResponse.model_validate(contact)

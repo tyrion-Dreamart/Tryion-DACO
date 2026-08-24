@@ -8,7 +8,6 @@ from app.models.models import Invoice, InvoiceStatus
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
-from app.models.models import Invoice, InvoiceStatus
 def to_mxn(amount, inv):
     """Convierte monto a MXN usando TC de la factura si es USD"""
     if inv.currency == 'USD' and inv.exchange_rate:

@@ -1,7 +1,7 @@
 """
 Exportación a Excel DACO — con historial de pagos
 """
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional
 from io import BytesIO
 
@@ -13,7 +13,7 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
 from app.core.deps import CurrentUser, DBDep
-from app.models.models import Invoice, InvoiceStatus, InvoicePayment
+from app.models.models import Invoice, InvoicePayment
 from app.models.quote_models import Quote
 from app.models.models import LegalEntity
 

@@ -326,7 +326,7 @@ export default function CotizacionesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-400 mb-1.5">At'n.</label>
+                  <label className="block text-xs text-gray-400 mb-1.5">At&apos;n.</label>
                   <input className="input" value={form.attention_name} onChange={e => setForm(f => ({ ...f, attention_name: e.target.value }))} placeholder="Nombre del contacto" />
                 </div>
                 <div>

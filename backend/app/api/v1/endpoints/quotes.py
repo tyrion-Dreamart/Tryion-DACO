@@ -74,6 +74,7 @@ async def list_quotes(
             select(QuoteItem).where(QuoteItem.quote_id == q.id).order_by(QuoteItem.sort_order)
         )
         q_items = list(items_res.scalars().all())
+        from app.schemas.quote_schemas import QuoteItemResponse
         resp = QuoteResponse(
             id=q.id,
             folio=q.folio,
@@ -95,7 +96,7 @@ async def list_quotes(
             extracted_by_ai=q.extracted_by_ai,
             created_at=datetime.now(timezone.utc),
             updated_at=datetime.now(timezone.utc),
-            items=[],
+            items=[QuoteItemResponse.model_validate(i) for i in q_items],
         )
         client = await db.execute(select(LegalEntity).where(LegalEntity.id == q.client_id))
         c = client.scalar_one_or_none()

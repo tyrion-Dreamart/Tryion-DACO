@@ -10,8 +10,8 @@ from typing import Optional
 
 from sqlalchemy import (
     Column, Table,
-    Boolean, DateTime, ForeignKey, Integer, String, Text,
-    UniqueConstraint, func, Enum as SAEnum, Numeric,
+    Boolean, DateTime, ForeignKey, String, Text,
+    func, Enum as SAEnum, Numeric,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

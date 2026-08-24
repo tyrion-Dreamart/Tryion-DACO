@@ -11,8 +11,6 @@ from app.core.security import verify_access_token
 from app.db.base import get_db
 from app.models.models import User, UserRole
 
-from typing import Annotated
-from fastapi import Depends
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
@@ -62,7 +60,6 @@ def require_roles(*roles: UserRole):
 AdminRequired = require_roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
 ManagerRequired = require_roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER)
 
-from fastapi import HTTPException
 
 async def require_editor(current_user: CurrentUser):
     """Bloquea acceso a viewers — solo lectura"""

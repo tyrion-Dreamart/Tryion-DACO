@@ -11,7 +11,7 @@ from fastapi import APIRouter, Query
 from sqlalchemy import select, func
 from app.core.deps import CurrentUser, DBDep
 from app.models.models import Invoice, InvoiceStatus
-from app.models.quote_models import Quote, QuoteItem, QuoteStatus
+from app.models.quote_models import Quote, QuoteStatus
 from app.models.models import LegalEntity
 
 router = APIRouter(prefix="/reportes", tags=["Reportes"])

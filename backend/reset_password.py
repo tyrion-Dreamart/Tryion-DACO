@@ -1,19 +1,36 @@
-﻿import asyncio
-from sqlalchemy.ext.asyncio import create_async_engine
+"""
+Restablece la contraseña de un usuario existente.
+
+Uso:
+    python reset_password.py usuario@ejemplo.com "nueva-contraseña-segura"
+"""
+import asyncio
+import sys
+
 from sqlalchemy import text
-from passlib.context import CryptContext
+from sqlalchemy.ext.asyncio import create_async_engine
 
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-new_password = 'admin123'
-hashed = pwd_context.hash(new_password)
+from app.core.config import settings
+from app.core.security import hash_password
 
-async def main():
-    engine = create_async_engine('postgresql+asyncpg://daco:daco_secret@localhost:5432/daco')
+
+async def main(email: str, new_password: str) -> None:
+    engine = create_async_engine(settings.DATABASE_URL)
     async with engine.connect() as conn:
-        result = await conn.execute(text("UPDATE users SET hashed_password = :hash WHERE email = 'admin@gmail.com'"), {"hash": hashed})
+        result = await conn.execute(
+            text("UPDATE users SET hashed_password = :hash WHERE email = :email"),
+            {"hash": hash_password(new_password), "email": email},
+        )
         await conn.commit()
-        print('Contraseña actualizada para admin@gmail.com')
-        print('Nueva contraseña: admin123')
+        if result.rowcount == 0:
+            print(f"No existe ningún usuario con email {email}")
+        else:
+            print(f"Contraseña actualizada para {email}")
     await engine.dispose()
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print(__doc__)
+        sys.exit(1)
+    asyncio.run(main(sys.argv[1], sys.argv[2]))

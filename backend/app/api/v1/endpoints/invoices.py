@@ -161,7 +161,6 @@ async def create_invoice(payload: InvoiceCreate, db: DBDep, current_user: Curren
         raise HTTPException(status_code=409, detail=f"Folio {payload.folio} ya existe")
 
     mapped_status = STATUS_MAP.get(payload.status, InvoiceStatus.PENDING)
-    main_quote_id = payload.quote_ids[0] if payload.quote_ids else payload.quote_id
 
     inv = Invoice(
         folio=payload.folio,

@@ -1,8 +1,7 @@
 ﻿import asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.session import async_session
+from app.db.base import AsyncSessionLocal as async_session
 from app.models.models import User, UserRole
-from app.core.security import get_password_hash
+from app.core.security import hash_password
 
 async def create_admin():
     async with async_session() as db:
@@ -17,7 +16,7 @@ async def create_admin():
         
         admin = User(
             email="admin@daco.com",
-            hashed_password=get_password_hash("Admin123!"),
+            hashed_password=hash_password("Admin123!"),
             full_name="Administrador DACO",
             role=UserRole.SUPER_ADMIN,
             is_active=True

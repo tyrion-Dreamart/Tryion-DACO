@@ -164,7 +164,7 @@ async def antiguedad_saldos(db: DBDep, current_user: CurrentUser):
 
     inv_r = await db.execute(
         select(Invoice).where(
-            Invoice.status.in_([InvoiceStatus.ISSUED, InvoiceStatus.PARTIAL, InvoiceStatus.OVERDUE])
+            Invoice.status.in_([InvoiceStatus.PENDING, InvoiceStatus.PARTIALLY_PAID, InvoiceStatus.OVERDUE])
         )
     )
     invoices = inv_r.scalars().all()

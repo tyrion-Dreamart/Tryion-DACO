@@ -20,7 +20,7 @@ async def get_alertas(db: DBDep, current_user: CurrentUser):
     # ── Facturas vencidas ─────────────────────────────────────────────────────
     inv_result = await db.execute(
         select(Invoice).where(
-            Invoice.status.in_([InvoiceStatus.ISSUED, InvoiceStatus.PARTIAL])
+            Invoice.status.in_([InvoiceStatus.PENDING, InvoiceStatus.PARTIALLY_PAID])
         )
     )
     invoices = inv_result.scalars().all()

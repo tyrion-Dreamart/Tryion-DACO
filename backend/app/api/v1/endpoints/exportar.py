@@ -121,7 +121,7 @@ async def export_estado_cuenta(
 
             for inv in invoices:
                 status_text = {
-                    "issued": "Emitida", "partial": "Parcial",
+                    "pending": "Emitida", "partially_paid": "Parcial",
                     "paid": "Pagada", "overdue": "Vencida", "cancelled": "Cancelada"
                 }.get(str(inv.status).replace("InvoiceStatus.", "").lower(), str(inv.status))
 

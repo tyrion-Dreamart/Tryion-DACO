@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-daco}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-daco_secret}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
       POSTGRES_DB: ${POSTGRES_DB:-daco}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
@@ -27,13 +27,13 @@ services:
     image: redis:7-alpine
     container_name: daco_redis
     restart: unless-stopped
-    command: redis-server --requirepass ${REDIS_PASSWORD:-redis_secret} --appendonly yes
+    command: redis-server --requirepass ${REDIS_PASSWORD:?Define REDIS_PASSWORD en .env} --appendonly yes
     volumes:
       - redis_data:/data
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-redis_secret}", "ping"]
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:?Define REDIS_PASSWORD en .env}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -46,9 +46,9 @@ services:
     container_name: daco_api
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-daco}:${POSTGRES_PASSWORD:-daco_secret}@db:5432/${POSTGRES_DB:-daco}
-      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret}@redis:6379/0
-      SECRET_KEY: ${SECRET_KEY:-change_me_in_production_use_256_bit_key}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-daco}:${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}@db:5432/${POSTGRES_DB:-daco}
+      REDIS_URL: redis://:${REDIS_PASSWORD:?Define REDIS_PASSWORD en .env}@redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:?Define SECRET_KEY en .env (openssl rand -hex 32)}
       ENVIRONMENT: ${ENVIRONMENT:-development}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
     volumes:

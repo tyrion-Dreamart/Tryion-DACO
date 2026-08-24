@@ -1,5 +1,6 @@
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlparse
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -31,6 +32,10 @@ class Settings(BaseSettings):
 
     ALLOWED_ORIGINS: str = "http://localhost:3000"
 
+    # Hosts permitidos para TrustedHostMiddleware en producción.
+    # Si se deja vacío, se derivan automáticamente de los hostnames de ALLOWED_ORIGINS.
+    ALLOWED_HOSTS: str = ""
+
     @field_validator("ALLOWED_ORIGINS", mode="before")
     @classmethod
     def parse_origins(cls, v) -> str:
@@ -41,6 +46,17 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.ENVIRONMENT == "production"
+
+    @property
+    def allowed_origins_list(self) -> list[str]:
+        return [o.strip() for o in self.ALLOWED_ORIGINS.split(",") if o.strip()]
+
+    @property
+    def allowed_hosts_list(self) -> list[str]:
+        if self.ALLOWED_HOSTS.strip():
+            return [h.strip() for h in self.ALLOWED_HOSTS.split(",") if h.strip()]
+        hosts = {urlparse(origin.strip()).hostname for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()}
+        return [h for h in hosts if h]
 
 
 @lru_cache

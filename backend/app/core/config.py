@@ -35,6 +35,20 @@ class Settings(BaseSettings):
     # Cada cuántas horas corre el job que marca facturas vencidas / cotizaciones expiradas
     ALERTAS_JOB_INTERVAL_HOURS: int = 6
 
+    # Correo de las alertas — si falta cualquiera de estos, el job sigue marcando
+    # facturas/cotizaciones pero se salta el envío (no truena)
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USE_TLS: bool = True
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM: str = ""  # si se deja vacío, usa SMTP_USER
+    ALERTAS_EMAIL_TO: str = ""
+
+    @property
+    def smtp_configured(self) -> bool:
+        return bool(self.SMTP_HOST and self.SMTP_USER and self.SMTP_PASSWORD and self.ALERTAS_EMAIL_TO)
+
     # Hosts permitidos para TrustedHostMiddleware en producción.
     # Si se deja vacío, se derivan automáticamente de los hostnames de ALLOWED_ORIGINS.
     ALLOWED_HOSTS: str = ""

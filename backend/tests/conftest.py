@@ -2,9 +2,13 @@
 Fixtures de integración: corren contra Postgres real, aisladas en su propio
 esquema (`pytest`, ver TEST_SCHEMA) para no tocar los datos de `public`.
 
-Requiere una URL de Postgres en TEST_DATABASE_URL (o DATABASE_URL como
-fallback) — no usa SQLite ni mocks: los enums, NUMERIC, CASCADE, etc. de
-Postgres son parte de lo que se está probando.
+Requiere una URL de Postgres en TEST_DATABASE_URL, DATABASE_URL, o el .env
+local de backend/ (vía pydantic-settings, mismo mecanismo que usa la app) —
+no usa SQLite ni mocks: los enums, NUMERIC, CASCADE, etc. de Postgres son
+parte de lo que se está probando. A propósito NO hay una contraseña de
+respaldo hardcodeada aquí: eso ya causó un bug (quedó apuntando a una
+contraseña vieja en cuanto se rotó en Postgres) y además no debería vivir
+commiteada en el repo.
 
 El esquema se crea/destruye con un engine SÍNCRONO (psycopg2) fuera de
 cualquier event loop de asyncio — el engine async (asyncpg) se crea de
@@ -24,10 +28,14 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 TEST_SCHEMA = "pytest"
-_raw_url = os.environ.get("TEST_DATABASE_URL") or os.environ.get(
-    "DATABASE_URL", "postgresql+asyncpg://daco:daco_secret@localhost:5432/daco"
-)
-os.environ.setdefault("DATABASE_URL", _raw_url)
+
+_test_db_url = os.environ.get("TEST_DATABASE_URL")
+if _test_db_url:
+    os.environ["DATABASE_URL"] = _test_db_url
+
+from app.core.config import settings  # lee DATABASE_URL de env o de backend/.env
+
+_raw_url = settings.DATABASE_URL
 _sync_url = _raw_url.replace("+asyncpg", "+psycopg2")
 
 

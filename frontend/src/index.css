@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #1a1714;
+    color: #e8ddd4;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #2a2420;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #574a40;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7a675a;
+  }
+}
+
+@layer components {
+
+  /* ── Buttons ─────────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium
+           transition-colors duration-150 cursor-pointer border-0;
+    background-color: #7a675a;
+    color: #f7f1eb;
+  }
+  .btn-primary:hover {
+    background-color: #6b5a4e;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium
+           transition-colors duration-150 cursor-pointer;
+    background-color: #2a2420;
+    color: #c9b8ac;
+    border: 1px solid #3d342c;
+  }
+  .btn-secondary:hover {
+    background-color: #3d342c;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium
+           transition-colors duration-150 cursor-pointer border-0;
+    background-color: transparent;
+    color: #a98469;
+  }
+  .btn-ghost:hover {
+    color: #e8ddd4;
+    background-color: #2a2420;
+  }
+
+  /* ── Inputs ──────────────────────────────────────────────────────────────── */
+  .input {
+    @apply w-full px-3 py-2 rounded-lg text-sm transition-colors duration-150;
+    background-color: #1e1a17;
+    border: 1px solid #3d342c;
+    color: #e8ddd4;
+  }
+  .input::placeholder {
+    color: #574a40;
+  }
+  .input:focus {
+    outline: none;
+    border-color: #7a675a;
+    box-shadow: 0 0 0 2px rgba(122, 103, 90, 0.25);
+  }
+  .input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── Cards ───────────────────────────────────────────────────────────────── */
+  .card {
+    @apply rounded-xl p-5;
+    background-color: #201c19;
+    border: 1px solid #2a2420;
+  }
+
+  .kpi-card {
+    @apply rounded-xl p-4;
+    background-color: #201c19;
+    border: 1px solid #2a2420;
+  }
+
+  /* ── Tables ──────────────────────────────────────────────────────────────── */
+  .daco-table {
+    @apply w-full text-sm;
+  }
+
+  .daco-table thead tr {
+    border-bottom: 1px solid #2a2420;
+  }
+
+  .daco-table th {
+    @apply text-xs font-medium uppercase tracking-wide py-3 px-3 text-left;
+    color: #a98469;
+  }
+
+  .daco-table td {
+    @apply py-3 px-3;
+    border-bottom: 1px solid rgba(42, 36, 32, 0.5);
+    color: #c9b8ac;
+  }
+
+  .daco-table tbody tr:hover {
+    background-color: rgba(42, 36, 32, 0.3);
+  }
+
+  .daco-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ── Badges ──────────────────────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium;
+  }
+
+  .badge-green {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .badge-red {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .badge-amber {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .badge-blue {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .badge-gray {
+    background-color: #2a2420;
+    color: #a98469;
+    border: 1px solid #3d342c;
+  }
+
+  .badge-brand {
+    background-color: rgba(122, 103, 90, 0.2);
+    color: #c9b8ac;
+    border: 1px solid rgba(122, 103, 90, 0.3);
+  }
+}

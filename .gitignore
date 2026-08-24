@@ -10,12 +10,21 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-
-# Virtualenv
 .venv/
 venv/
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
 
 # Editors / OS
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
+
+# Este proyecto: carpeta de respaldo de la consolidación de estructura,
+# no debe entrar al historial (ver _archive/README.md)
+/_archive/

@@ -1,0 +1,11 @@
+line-length = 120
+target-version = "py312"
+
+[lint]
+select = ["E", "F"]
+ignore = [
+  "E402",  # imports después de código: común en scripts de utilidades (seed_admin.py, etc.)
+  "E501",  # línea larga: no es un bug, se deja al formateador (ruff format)
+  "E711",  # `col == None` es el idiom correcto de SQLAlchemy para IS NULL en filtros
+  "E712",  # `col == True` es el idiom correcto de SQLAlchemy para columnas boolean en filtros
+]
